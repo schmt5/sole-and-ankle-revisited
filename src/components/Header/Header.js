@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import { COLORS, WEIGHTS } from '../../constants';
+import { COLORS, WEIGHTS, QUERIES } from '../../constants';
 import Logo from '../Logo';
 import SuperHeader from '../SuperHeader';
 import MobileMenu from '../MobileMenu';
+import UnstyledButton from '../UnstyledButton';
+import Icon from '../Icon';
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
@@ -18,17 +20,29 @@ const Header = () => {
     <header>
       <SuperHeader />
       <MainHeader>
-        <Side>
+        <LogoWrapper>
           <Logo />
-        </Side>
-        <Nav>
+        </LogoWrapper>
+        <DesktopNav>
           <NavLink href="/sale">Sale</NavLink>
           <NavLink href="/new">New&nbsp;Releases</NavLink>
+          <NavLink href="/men">Men</NavLink>
           <NavLink href="/men">Men</NavLink>
           <NavLink href="/women">Women</NavLink>
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
-        </Nav>
+        </DesktopNav>
+        <MobileActions>
+          <UnstyledButton>
+            <Icon id="shopping-bag" size={16} />
+          </UnstyledButton>
+          <UnstyledButton>
+            <Icon id="search" size={16} />
+          </UnstyledButton>
+          <UnstyledButton onClick={() => setShowMobileMenu(true)}>
+            <Icon id="menu" size={16} />
+          </UnstyledButton>
+        </MobileActions>
         <Side />
       </MainHeader>
 
@@ -44,18 +58,58 @@ const MainHeader = styled.div`
   display: flex;
   align-items: baseline;
   padding: 18px 32px;
-  height: 72px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+  overflow: auto;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    border-top: 5px solid ${COLORS.gray[900]};
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
-const Nav = styled.nav`
+const DesktopNav = styled.nav`
   display: flex;
-  gap: 48px;
+  gap: clamp(
+    1rem,
+    7vw - 3.25rem,
+    3rem
+  );
   margin: 0px 48px;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
+`;
+
+const MobileActions = styled.div`
+  display: none;
+
+  
+  @media ${QUERIES.tabletAndSmaller} {
+    display: flex;
+    gap: 32px;
+  }
+
+  @media ${QUERIES.phoneAndSmaller} {
+    gap: 16px;
+  }
 `;
 
 const Side = styled.div`
   flex: 1;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
+`;
+
+const LogoWrapper = styled.div`
+  flex: 1;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex: revert;
+  }
 `;
 
 const NavLink = styled.a`
